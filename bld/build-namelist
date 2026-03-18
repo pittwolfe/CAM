@@ -571,11 +571,13 @@ my $prescribe_aerosols = $TRUE;
 if ($simple_phys) {$prescribe_aerosols = $FALSE;}
 
 # CTSM Dust emissions scheme
-my $soil_erod_atm = $FALSE;
-add_default($nl, 'dust_emis_method');
-if ( $nl->get_value('dust_emis_method') =~ /Zender/ ) {
-    add_default($nl, 'zender_soil_erod_source');
-    if ($nl->get_value('zender_soil_erod_source') =~ /atm/) {$soil_erod_atm = $TRUE;}
+if ($chem ne 'none') {
+    my $soil_erod_atm = $FALSE;
+    add_default($nl, 'dust_emis_method');
+    if ( $nl->get_value('dust_emis_method') =~ /Zender/ ) {
+        add_default($nl, 'zender_soil_erod_source');
+        if ($nl->get_value('zender_soil_erod_source') =~ /atm/) {$soil_erod_atm = $TRUE;}
+    }
 }
 
 # Chemistry deposition lists
@@ -698,15 +700,17 @@ if ($sim_year =~ /(\d+)-(\d+)/) {
 
 # Setup default ndep streams only if not simple_phys or aqua_mode and
 # the chemistry cannot produce the nitrogen depostion fluxes
-if (!($simple_phys or $aqua_mode)) {
-  my $chem_nitrodep = chem_has_species($cfg, 'NO') and chem_has_species($cfg, 'NH3');
-  if ((!$chem_nitrodep) or ($chem =~ /geoschem/)) {
-    add_default($nl, 'stream_ndep_mesh_filename');
-    add_default($nl, 'stream_ndep_data_filename', 'sim_year'=>$sim_year);
-    add_default($nl, 'stream_ndep_year_first', 'val'=>$sim_year_first);
-    add_default($nl, 'stream_ndep_year_last',  'val'=>$sim_year_last);
-    add_default($nl, 'stream_ndep_year_align', 'val'=>$sim_year_align);
-  }
+if ($chem ne 'none') {
+    if (!($simple_phys or $aqua_mode)) {
+      my $chem_nitrodep = chem_has_species($cfg, 'NO') and chem_has_species($cfg, 'NH3');
+      if ((!$chem_nitrodep) or ($chem =~ /geoschem/)) {
+        add_default($nl, 'stream_ndep_mesh_filename');
+        add_default($nl, 'stream_ndep_data_filename', 'sim_year'=>$sim_year);
+        add_default($nl, 'stream_ndep_year_first', 'val'=>$sim_year_first);
+        add_default($nl, 'stream_ndep_year_last',  'val'=>$sim_year_last);
+        add_default($nl, 'stream_ndep_year_align', 'val'=>$sim_year_align);
+      }
+    }
 }
 
 # Topography

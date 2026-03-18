@@ -16,3 +16,6 @@ cam_test_summaries
 
 # Ignore python bytecode files
 *.pyc
+
+# Mac Finder files
+.DS_Store
