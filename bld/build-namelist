@@ -571,8 +571,8 @@ my $prescribe_aerosols = $TRUE;
 if ($simple_phys) {$prescribe_aerosols = $FALSE;}
 
 # CTSM Dust emissions scheme
+my $soil_erod_atm = $FALSE;
 if ($chem ne 'none') {
-    my $soil_erod_atm = $FALSE;
     add_default($nl, 'dust_emis_method');
     if ( $nl->get_value('dust_emis_method') =~ /Zender/ ) {
         add_default($nl, 'zender_soil_erod_source');
