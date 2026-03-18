@@ -572,10 +572,12 @@ if ($simple_phys) {$prescribe_aerosols = $FALSE;}
 
 # CTSM Dust emissions scheme
 my $soil_erod_atm = $FALSE;
-add_default($nl, 'dust_emis_method');
-if ( $nl->get_value('dust_emis_method') =~ /Zender/ ) {
-    add_default($nl, 'zender_soil_erod_source');
-    if ($nl->get_value('zender_soil_erod_source') =~ /atm/) {$soil_erod_atm = $TRUE;}
+if ($chem ne 'none') {
+    add_default($nl, 'dust_emis_method');
+    if ( $nl->get_value('dust_emis_method') =~ /Zender/ ) {
+        add_default($nl, 'zender_soil_erod_source');
+        if ($nl->get_value('zender_soil_erod_source') =~ /atm/) {$soil_erod_atm = $TRUE;}
+    }
 }
 
 # Chemistry deposition lists
