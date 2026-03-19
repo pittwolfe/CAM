@@ -19,3 +19,6 @@ cam_test_summaries
 
 # Mac Finder files
 .DS_Store
+
+# Ipython checkpoint files
+.ipynb_checkpoints
